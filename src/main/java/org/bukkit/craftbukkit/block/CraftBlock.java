@@ -305,7 +305,7 @@ public class CraftBlock implements Block {
     }
 
     public double getTemperature() {
-        return getWorld().getTemperature(x, z);
+        return getWorld().getTemperature(x, y, z);
     }
 
     public double getHumidity() {

@@ -537,8 +537,13 @@ public class CraftWorld implements World {
         }
     }
 
+    @Deprecated
     public double getTemperature(int x, int z) {
         return this.world.getBiome(x, z).temperature;
+    }
+    
+    public double getTemperature(int x, int y, int z) {
+        return this.world.getBiome(x, z).a(x, y, z);
     }
 
     public double getHumidity(int x, int z) {
