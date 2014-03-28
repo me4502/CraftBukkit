@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.ArrayList;
 import org.apache.logging.log4j.Level;
 import org.bukkit.craftbukkit.command.VanillaCommandWrapper;
+import org.bukkit.event.block.BlockCommandPreprocessEvent;
 import com.google.common.base.Joiner;
 // CraftBukkit end
 
@@ -160,8 +161,17 @@ public abstract class CommandBlockListenerAbstract implements ICommandListener {
 
             // Now dispatch all of the commands we ended up with
             for (int i = 0; i < commands.size(); i++) {
+                String message = joiner.join(java.util.Arrays.asList(commands.get(i)));
+                
+                BlockCommandPreprocessEvent event = new BlockCommandPreprocessEvent(((org.bukkit.command.BlockCommandSender) sender).getBlock(), message);
+                org.bukkit.Bukkit.getServer().getPluginManager().callEvent(event);
+                
+                if (event.isCancelled()) {
+                    continue;
+                }
+                
                 try {
-                    if (commandMap.dispatch(sender, joiner.join(java.util.Arrays.asList(commands.get(i))))) {
+                    if (commandMap.dispatch(sender, event.getMessage())) {
                         completed++;
                     }
                 } catch (Throwable exception) {
