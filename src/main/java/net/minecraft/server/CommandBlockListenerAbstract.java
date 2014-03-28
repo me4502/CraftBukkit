@@ -162,14 +162,14 @@ public abstract class CommandBlockListenerAbstract implements ICommandListener {
             // Now dispatch all of the commands we ended up with
             for (int i = 0; i < commands.size(); i++) {
                 String message = joiner.join(java.util.Arrays.asList(commands.get(i)));
-                
+
                 BlockCommandPreprocessEvent event = new BlockCommandPreprocessEvent(((org.bukkit.command.BlockCommandSender) sender).getBlock(), message);
                 org.bukkit.Bukkit.getServer().getPluginManager().callEvent(event);
-                
+
                 if (event.isCancelled()) {
                     continue;
                 }
-                
+
                 try {
                     if (commandMap.dispatch(sender, event.getMessage())) {
                         completed++;
